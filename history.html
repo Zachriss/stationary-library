@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-lang="history.pageTitle">Our History - Christopher Stationary</title>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+    <style>
+        /* Enhanced Navigation Styles */
+        .nav-toggle {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1002;
+            background: var(--primary);
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .nav-toggle:hover {
+            background: var(--secondary);
+            transform: scale(1.1);
+        }
+        
+        .nav-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 1000;
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .mobile-nav {
+            position: fixed;
+            top: 0;
+            left: -300px;
+            width: 280px;
+            height: 100%;
+            background: var(--primary);
+            z-index: 1001;
+            padding: 80px 20px 20px;
+            overflow-y: auto;
+            transition: left 0.3s ease;
+            box-shadow: 5px 0 15px rgba(0,0,0,0.3);
+        }
+        
+        .mobile-nav.active {
+            left: 0;
+        }
+        
+        .mobile-nav a {
+            display: block;
+            color: white;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .mobile-nav a:hover,
+        .mobile-nav a.active {
+            background: var(--secondary);
+            padding-left: 25px;
+        }
+        
+        .mobile-nav .close-nav {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        .mobile-language-switcher {
+            margin-top: 30px;
+            display: flex;
+            gap: 10px;
+            padding: 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .mobile-lang-btn {
+            flex: 1;
+            padding: 10px;
+            background: rgba(255,255,255,0.1);
+            border: none;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        .mobile-lang-btn.active {
+            background: var(--secondary);
+        }
+        
+        @media (max-width: 768px) {
+            .nav-toggle {
+                display: flex;
+            }
+            
+            .nav-menu {
+                display: none;
+            }
+            
+            .header-container {
+                justify-content: flex-end;
+            }
+            
+            .logo h1 {
+                font-size: 1.2rem;
+            }
+        }
+        
+        /* History page specific styles */
+        .founder-content {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 50px;
+            align-items: center;
+        }
+        .founder-info h2 {
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+        .founder-info h3 {
+            color: var(--secondary);
+            margin-bottom: 20px;
+        }
+        .founder-info p {
+            margin-bottom: 15px;
+            line-height: 1.8;
+        }
+        .timeline-container {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .timeline {
+            position: relative;
+            padding: 20px 0;
+        }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 100%;
+            background: var(--primary);
+        }
+        .timeline-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 50px;
+            position: relative;
+        }
+        .timeline-item:nth-child(odd) {
+            flex-direction: row;
+        }
+        .timeline-item:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+        .timeline-date {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: var(--secondary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1;
+        }
+        .timeline-content {
+            width: calc(50% - 70px);
+            padding: 30px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            position: relative;
+        }
+        .timeline-item:nth-child(odd) .timeline-content {
+            margin-left: auto;
+        }
+        .timeline-item:nth-child(even) .timeline-content {
+            margin-right: auto;
+        }
+        .timeline-content h3 {
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+        .timeline-content p {
+            color: #666;
+            line-height: 1.6;
+        }
+        .evolution-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+        .evolution-card {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+        .evolution-card:hover {
+            transform: translateY(-10px);
+        }
+        .evolution-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            color: white;
+            font-size: 2rem;
+        }
+        .evolution-card h3 {
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+        .evolution-card h4 {
+            color: var(--secondary);
+            margin-bottom: 20px;
+        }
+        .evolution-card ul {
+            text-align: left;
+            padding-left: 20px;
+        }
+        .evolution-card li {
+            margin-bottom: 8px;
+            color: #666;
+        }
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 25px;
+        }
+        .gallery-item {
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        .gallery-item:hover {
+            transform: translateY(-5px);
+        }
+        .gallery-item p {
+            text-align: center;
+            margin-top: 15px;
+            font-weight: 500;
+            color: var(--primary);
+        }
+        .objectives-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        .objective-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+        .objective-header {
+            background: var(--primary);
+            color: white;
+            padding: 20px;
+        }
+        .objective-header h3 {
+            margin: 0;
+            font-size: 1.2rem;
+        }
+        .objective-content {
+            padding: 30px;
+        }
+        .objective-content ul {
+            padding-left: 20px;
+        }
+        .objective-content li {
+            margin-bottom: 12px;
+            line-height: 1.6;
+            color: #666;
+        }
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.9);
+            z-index: 1001;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .lightbox-content {
+            max-width: 90%;
+            max-height: 90%;
+            position: relative;
+            animation: zoomIn 0.3s ease;
+        }
+        @keyframes zoomIn {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        .lightbox-close {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+        }
+        .lightbox-prev, .lightbox-next {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        .lightbox-prev { left: 20px; }
+        .lightbox-next { right: 20px; }
+        
+        @media (max-width: 768px) {
+            .founder-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            .timeline::before {
+                left: 30px;
+            }
+            .timeline-item {
+                flex-direction: row !important;
+                margin-left: 60px;
+            }
+            .timeline-date {
+                left: 0;
+                transform: translateX(-50%);
+                width: 80px;
+                height: 80px;
+                font-size: 1.2rem;
+            }
+            .timeline-content {
+                width: calc(100% - 40px);
+                margin: 0 !important;
+            }
+            .gallery-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
+            .objectives-grid {
+                grid-template-columns: 1fr;
+            }
+            .header-container {
+                padding-top: 80px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Enhanced Mobile Navigation -->
+    <button class="nav-toggle" id="navToggle">
+        <i class="fas fa-bars"></i>
+    </button>
+    
+    <div class="nav-overlay" id="navOverlay"></div>
+    
+    <nav class="mobile-nav" id="mobileNav">
+        <button class="close-nav" id="closeNav">
+            <i class="fas fa-times"></i>
+        </button>
+        
+        <div class="mobile-nav-header">
+            <h3 style="color: white; margin-bottom: 30px; text-align: center;">Christopher Stationary</h3>
+        </div>
+        
+        <a href="index.html" data-lang="header.navHome">Home</a>
+        <a href="services.html" data-lang="header.navServices">Services</a>
+        <a href="about.html" data-lang="header.navAbout">About Us</a>
+        <a href="structure.html" data-lang="header.navStructure">Organization</a>
+        <a href="history.html" class="active" data-lang="header.navHistory">History</a>
+        <a href="contacts.html" data-lang="header.navContact">Contact</a>
+        
+        <div class="mobile-language-switcher">
+            <button class="mobile-lang-btn active" data-lang="sw">SW</button>
+            <button class="mobile-lang-btn" data-lang="en">EN</button>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="container header-container">
+            <div class="logo">
+                <h1 data-lang="header.title">Christopher Stationary & Library Movies</h1>
+            </div>
+            
+            <nav class="nav-menu">
+                <a href="index.html" data-lang="header.navHome">Home</a>
+                <a href="services.html" data-lang="header.navServices">Services</a>
+                <a href="about.html" data-lang="header.navAbout">About Us</a>
+                <a href="structure.html" data-lang="header.navStructure">Organization</a>
+                <a href="history.html" class="active" data-lang="header.navHistory">History</a>
+                <a href="contacts.html" data-lang="header.navContact">Contact</a>
+            </nav>
+            
+       
+        </div>
+    </header>
+
+    <!-- History Header -->
+    <section class="page-header" style="background: linear-gradient(rgba(44, 62, 80, 0.9), rgba(44, 62, 80, 0.9)), url('https://images.unsplash.com/photo-1581094794329-c8112a89af12?auto=format&fit=crop&w=1600'); background-size: cover; background-position: center; padding: 100px 0 60px; margin-top: 80px;">
+        <div class="container">
+            <div class="section-title fade-in">
+                <h1 data-lang="history.pageTitle">Our History</h1>
+                <p>Journey of growth and innovation since 2025</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Founder Spotlight -->
+    <section class="founder-section" style="padding: 80px 0;">
+        <div class="container">
+            <div class="founder-content fade-in">
+                <div class="founder-image">
+                    <div style="width: 200px; height: 200px; border-radius: 50%; background: linear-gradient(45deg, #2c3e50, #4a6491); margin: 0 auto; display: flex; align-items: center; justify-content: center; color: white; font-size: 4rem; border: 5px solid var(--secondary);">
+                        <i class="fas fa-user-tie"></i>
+                    </div>
+                </div>
+                <div class="founder-info">
+                    <h2 data-lang="history.founder">Founder Spotlight</h2>
+                    <h3 data-lang="history.founderName">Zacharia Christopher Sugilo</h3>
+                    <p data-lang="history.founderBio">Founded Christopher Stationary with a vision to provide comprehensive ICT services to the local community.</p>
+                    <p>With a background in information technology and a passion for entrepreneurship, Zacharia started the business with a small stationary shop. His vision was to create a one-stop solution for ICT and media needs in the community.</p>
+                    <p>Under his leadership, the business has grown from a single shop to a comprehensive service provider with multiple departments and a team of dedicated professionals.</p>
+                    <p><strong>Contact:</strong> zachariachristophersugilo@gmail.com | +255 754 237 948</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Timeline -->
+    <section class="timeline-section" style="background-color: var(--light-gray); padding: 80px 0;">
+        <div class="container">
+            <div class="section-title fade-in">
+                <h2 data-lang="history.milestones">Business Milestones</h2>
+                <p>Key moments in our journey of growth and innovation</p>
+            </div>
+            
+            <div class="timeline-container fade-in">
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-date">2020</div>
+                        <div class="timeline-content">
+                            <h3 data-lang="history.milestone5">2020 - TV Installation Services</h3>
+                            <p>started with professional TV installation services for major providers</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        
+                        <div class="timeline-date">2025</div>
+                        <div class="timeline-content">
+                            <h3 data-lang="history.milestone1"> August, 2025 - Business expand</h3>
+                            <p>Established as a small library movie services in Shinyanga</p>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-date">2025</div>
+                        <div class="timeline-content">
+                            <h3 data-lang="history.milestone2">September, 2025 - Expanded to stationery</h3>
+                            <p>Added printing services like documents and pictures</p>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-date">2025</div>
+                        <div class="timeline-content">
+                            <h3 data-lang="history.milestone3">October, 2025 - Added Phone Repair</h3>
+                            <p>Expanded services to include smartphone and button phone repair using computers</p>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-date">2025</div>
+                        <div class="timeline-content">
+                            <h3 data-lang="history.milestone4">October, 2025 - Online Services Launch</h3>
+                            <p>Started offering online application assistance and digital services</p>
+                        </div>
+                    </div>
+                    
+                    
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Evolution of Services -->
+    <section class="evolution-section" style="padding: 80px 0;">
+        <div class="container">
+            <div class="section-title fade-in">
+                <h2 data-lang="history.evolution">Evolution of Services</h2>
+                <p>How our services have grown and evolved over the years</p>
+            </div>
+            
+            <div class="evolution-grid">
+                <div class="evolution-card fade-in">
+                    <div class="evolution-icon" style="background-color: #2c3e50;">
+                        <i class="fas fa-print"></i>
+                    </div>
+                    <h3>2020-2025</h3>
+                    <h4>Foundation Phase</h4>
+                    <ul>
+                        <li>Basic TV installation</li>
+
+                    </ul>
+                </div>
+                
+                <div class="evolution-card fade-in">
+                    <div class="evolution-icon" style="background-color: #e67e22;">
+                        <i class="fas fa-film"></i>
+                    </div>
+                    <h3>2025- Now</h3>
+                    <h4>Media Expansion</h4>
+                    <ul>
+                        <li>Movie burning services</li>
+                        <li>Music audio/video burning</li>
+                        <li>Extended printing services</li>
+                        <li>Graphic design</li>
+                        <li>Photocopy services</li>
+                        <li>Simple printing</li>
+                        <li>Typing services</li>
+                    </ul>
+                </div>
+                
+                <div class="evolution-card fade-in">
+                    <div class="evolution-icon" style="background-color: #27ae60;">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <h3>2025-now</h3>
+                    <h4>Technology Integration</h4>
+                    <ul>
+                        <li>Smartphone repair</li>
+                        <li>Computer services</li>
+                        <li>Network troubleshooting</li>
+                        <li>Software support</li>
+                    </ul>
+                </div>
+                
+                <div class="evolution-card fade-in">
+                    <div class="evolution-icon" style="background-color: #8e44ad;">
+                        <i class="fas fa-globe"></i>
+                    </div>
+                    <h3>2025-Present</h3>
+                    <h4>Digital Transformation</h4>
+                    <ul>
+                        <li>Online application assistance</li>
+                        <li>TV installation services</li>
+                        <li>Website development</li>
+                        <li>Comprehensive ICT solutions</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery -->
+    <section class="gallery-section" style="background-color: var(--light-gray); padding: 80px 0;">
+        <div class="container">
+            <div class="section-title fade-in">
+                <h2 data-lang="history.gallery">Photo Gallery</h2>
+                <p>Memorable moments from our journey</p>
+            </div>
+            
+            <div class="gallery-grid fade-in">
+                <div class="gallery-item" onclick="openLightbox(0)">
+                    <div class="gallery-image" style="background: linear-gradient(45deg, #2c3e50, #4a6491); height: 200px; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem;">
+                        <i class="fas fa-store"></i>
+                    </div>
+                    <p>First Shop Opening (2025)</p>
+                </div>
+                
+                <div class="gallery-item" onclick="openLightbox(1)">
+                    <div class="gallery-image" style="background: linear-gradient(45deg, #e67e22, #f39c12); height: 200px; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem;">
+                        <i class="fas fa-film"></i>
+                    </div>
+                    <p>Media Services Launch (2025)</p>
+                </div>
+                
+                <div class="gallery-item" onclick="openLightbox(2)">
+                    <div class="gallery-image" style="background: linear-gradient(45deg, #27ae60, #2ecc71); height: 200px; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem;">
+                        <i class="fas fa-tools"></i>
+                    </div>
+                    <p>Phone Repair Setup (2025)</p>
+                </div>
+                
+                <div class="gallery-item" onclick="openLightbox(3)">
+                    <div class="gallery-image" style="background: linear-gradient(45deg, #3498db, #2980b9); height: 200px; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem;">
+                        <i class="fas fa-desktop"></i>
+                    </div>
+                    <p>Digital Services (2025)</p>
+                </div>
+                
+                <div class="gallery-item" onclick="openLightbox(4)">
+                    <div class="gallery-image" style="background: linear-gradient(45deg, #8e44ad, #9b59b6); height: 200px; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem;">
+                        <i class="fas fa-tv"></i>
+                    </div>
+                    <p>TV Installation Team (2020)</p>
+                </div>
+                
+                <div class="gallery-item" onclick="openLightbox(5)">
+                    <div class="gallery-image" style="background: linear-gradient(45deg, #e74c3c, #c0392b); height: 200px; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem;">
+                        <i class="fas fa-award"></i>
+                    </div>
+                    <p>Business Excellence Award</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Mission and Vision -->
+    <section class="mission-vision-section" style="padding: 80px 0;">
+        <div class="container">
+            <div class="section-title fade-in">
+                <h2 data-lang="history.objectives">Objectives & Future Goals</h2>
+                <p>Our roadmap for continued growth and innovation</p>
+            </div>
+            
+            <div class="objectives-grid">
+                <div class="objective-card fade-in">
+                    <div class="objective-header">
+                        <h3>Short-term Goals (2024-2025)</h3>
+                    </div>
+                    <div class="objective-content">
+                        <ul>
+                            <li>Expand to two new locations in Shinyanga region</li>
+                            <li>Introduce mobile repair van service</li>
+                            <li>Launch online booking system</li>
+                            <li>Add drone photography services</li>
+                            <li>Increase team size by 30%</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="objective-card fade-in">
+                    <div class="objective-header">
+                        <h3>Medium-term Goals (2026-2028)</h3>
+                    </div>
+                    <div class="objective-content">
+                        <ul>
+                            <li>Expand to other major cities in Tanzania</li>
+                            <li>Establish training center for ICT skills</li>
+                            <li>Develop proprietary software solutions</li>
+                            <li>Create franchise model for expansion</li>
+                            <li>Partner with educational institutions</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="objective-card fade-in">
+                    <div class="objective-header">
+                        <h3>Long-term Vision (2029-2035)</h3>
+                    </div>
+                    <div class="objective-content">
+                        <ul>
+                            <li>Become East Africa's leading ICT service provider</li>
+                            <li>Establish innovation and research center</li>
+                            <li>Expand to neighboring countries</li>
+                            <li>Develop smart community solutions</li>
+                            <li>Create foundation for youth ICT training</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Lightbox -->
+    <div id="galleryLightbox" class="lightbox">
+        <div class="lightbox-content">
+            <button class="lightbox-close" onclick="closeLightbox()">&times;</button>
+            <button class="lightbox-prev" onclick="changeImage(-1)">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <button class="lightbox-next" onclick="changeImage(1)">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+            <div id="lightboxImage" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: white; font-size: 5rem;"></div>
+            <div id="lightboxCaption" style="color: white; text-align: center; margin-top: 20px; font-size: 1.2rem;"></div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <h2 data-lang="header.title">Christopher Stationary & Library Movies</h2>
+                    <p>Your trusted partner for ICT and media services</p>
+                </div>
+                
+                <div class="footer-links">
+                    <h3 data-lang="home.footerQuickLinks">Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html" data-lang="header.navHome">Home</a></li>
+                        <li><a href="services.html" data-lang="header.navServices">Services</a></li>
+                        <li><a href="about.html" data-lang="header.navAbout">About Us</a></li>
+                        <li><a href="contacts.html" data-lang="header.navContact">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-contact">
+                    <h3 data-lang="home.footerContact">Contact Info</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> <span data-lang="contact.addressText">1288 Lagana Village, Shinyanga, Tanzania</span></p>
+                    <p><i class="fas fa-phone"></i> +255 612 372 627 (Office)</p>
+                    <p><i class="fas fa-phone"></i> +255 754 237 948 (Mobile)</p>
+                    <p><i class="fas fa-envelope"></i> zachariachristophersugilo@gmail.com</p>
+                    <p><i class="fas fa-envelope"></i> amoschristophersugilo@gmail.com</p>
+                    
+                    <div class="social-links">
+                        <a href="https://facebook.com/zachriss" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://twitter.com/zachriss" class="social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="https://instagram.com/zachriss" class="social-link"><i class="fab fa-instagram"></i></a>
+                        <a href="https://wa.me/255754237948" class="social-link"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; <span id="currentYear">2025</span> Christopher Stationary & Library Movies. <span data-lang="home.footerRights">All rights reserved</span>.<br>Designed and Developed by Zachriss </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="js/language-switcher.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/animations.js"></script>
+    
+    <script>
+        // Set current year in footer
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+        
+        // Enhanced Mobile Navigation
+        const navToggle = document.getElementById('navToggle');
+        const mobileNav = document.getElementById('mobileNav');
+        const navOverlay = document.getElementById('navOverlay');
+        const closeNav = document.getElementById('closeNav');
+        
+        function openMobileNav() {
+            mobileNav.classList.add('active');
+            navOverlay.style.display = 'block';
+            setTimeout(() => {
+                navOverlay.style.opacity = '1';
+            }, 10);
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeMobileNav() {
+            mobileNav.classList.remove('active');
+            navOverlay.style.opacity = '0';
+            setTimeout(() => {
+                navOverlay.style.display = 'none';
+            }, 300);
+            document.body.style.overflow = '';
+        }
+        
+        navToggle.addEventListener('click', openMobileNav);
+        closeNav.addEventListener('click', closeMobileNav);
+        navOverlay.addEventListener('click', closeMobileNav);
+        
+        // Close mobile nav when clicking on a link
+        document.querySelectorAll('.mobile-nav a').forEach(link => {
+            link.addEventListener('click', closeMobileNav);
+        });
+        
+        // Mobile language switcher
+        document.querySelectorAll('.mobile-lang-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.mobile-lang-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+                document.querySelector(`.lang-btn[data-lang="${this.dataset.lang}"]`).classList.add('active');
+            });
+        });
+        
+        // Gallery data
+        const galleryItems = [
+            {
+                icon: 'fas fa-store',
+                color: '#2c3e50',
+                caption: 'First Shop Opening (2005)',
+                description: 'Our humble beginnings as a small stationary shop in Shinyanga.'
+            },
+            {
+                icon: 'fas fa-film',
+                color: '#e67e22',
+                caption: 'Media Services Launch (2010)',
+                description: 'Expanded to offer movie burning and music services to meet growing demand.'
+            },
+            {
+                icon: 'fas fa-tools',
+                color: '#27ae60',
+                caption: 'Phone Repair Setup (2015)',
+                description: 'Started smartphone and button phone repair services.'
+            },
+            {
+                icon: 'fas fa-desktop',
+                color: '#3498db',
+                caption: 'Digital Services (2020)',
+                description: 'Launched online application assistance and digital services.'
+            },
+            {
+                icon: 'fas fa-tv',
+                color: '#8e44ad',
+                caption: 'TV Installation Team (2023)',
+                description: 'Added professional TV installation services for major providers.'
+            },
+            {
+                icon: 'fas fa-award',
+                color: '#e74c3c',
+                caption: 'Business Excellence Award',
+                description: 'Received recognition for outstanding service and community contribution.'
+            }
+        ];
+        
+        let currentImageIndex = 0;
+        
+        function openLightbox(index) {
+            currentImageIndex = index;
+            updateLightbox();
+            document.getElementById('galleryLightbox').style.display = 'flex';
+        }
+        
+        function closeLightbox() {
+            document.getElementById('galleryLightbox').style.display = 'none';
+        }
+        
+        function changeImage(direction) {
+            currentImageIndex = (currentImageIndex + direction + galleryItems.length) % galleryItems.length;
+            updateLightbox();
+        }
+        
+        function updateLightbox() {
+            const item = galleryItems[currentImageIndex];
+            const lightboxImage = document.getElementById('lightboxImage');
+            const lightboxCaption = document.getElementById('lightboxCaption');
+            
+            lightboxImage.innerHTML = `<i class="${item.icon}"></i>`;
+            lightboxImage.style.color = item.color;
+            lightboxCaption.innerHTML = `
+                <h3>${item.caption}</h3>
+                <p>${item.description}</p>
+            `;
+        }
+        
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            const lightbox = document.getElementById('galleryLightbox');
+            if (lightbox.style.display === 'flex') {
+                if (e.key === 'Escape') {
+                    closeLightbox();
+                } else if (e.key === 'ArrowLeft') {
+                    changeImage(-1);
+                } else if (e.key === 'ArrowRight') {
+                    changeImage(1);
+                }
+            }
+        });
+    </script>
+</body>
+</html>

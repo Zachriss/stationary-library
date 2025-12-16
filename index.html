@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-lang="header.title">Christopher Stationary & Library Movies</title>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+    <style>
+        /* Enhanced Navigation Styles */
+        .nav-toggle {
+            position: fixed;
+            top: 50px;
+            left: 20px;
+            z-index: 1002;
+            background: var(--primary);
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .nav-toggle:hover {
+            background: var(--secondary);
+            transform: scale(1.1);
+        }
+        
+        .nav-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 1000;
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .mobile-nav {
+            position: fixed;
+            top: 0;
+            left: -300px;
+            width: 280px;
+            height: 100%;
+            background: var(--primary);
+            z-index: 1001;
+            padding: 80px 20px 20px;
+            overflow-y: auto;
+            transition: left 0.3s ease;
+            box-shadow: 5px 0 15px rgba(0,0,0,0.3);
+        }
+        
+        .mobile-nav.active {
+            left: 0;
+        }
+        
+        .mobile-nav a {
+            display: block;
+            color: white;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .mobile-nav a:hover,
+        .mobile-nav a.active {
+            background: var(--secondary);
+            padding-left: 25px;
+        }
+        
+        .mobile-nav .close-nav {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        .mobile-language-switcher {
+            margin-top: 30px;
+            display: flex;
+            gap: 10px;
+            padding: 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .mobile-lang-btn {
+            flex: 1;
+            padding: 10px;
+            background: rgba(255,255,255,0.1);
+            border: none;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        .mobile-lang-btn.active {
+            background: var(--secondary);
+        }
+        
+        @media (max-width: 768px) {
+            .nav-toggle {
+                display: flex;
+            }
+            
+            .nav-menu {
+                display: none;
+            }
+            
+            .header-container {
+                justify-content: flex-end;
+            }
+            
+            .logo h1 {
+                font-size: 1.2rem;
+            }
+        }
+
+  
+    </style>
+</head>
+<body>
+    <!-- Enhanced Mobile Navigation -->
+    <button class="nav-toggle" id="navToggle">
+        <i class="fas fa-bars"></i>
+    </button>
+    
+    <div class="nav-overlay" id="navOverlay"></div>
+    
+    <nav class="mobile-nav" id="mobileNav">
+        <button class="close-nav" id="closeNav">
+            <i class="fas fa-times"></i>
+        </button>
+        
+        <div class="mobile-nav-header">
+            <h3 style="color: white; margin-bottom: 30px; text-align: center;">Christopher Stationary</h3>
+        </div>
+        
+        <a href="index.html" class="active" data-lang="header.navHome">Home</a>
+        <a href="services.html" data-lang="header.navServices">Services</a>
+        <a href="about.html" data-lang="header.navAbout">About Us</a>
+        <a href="structure.html" data-lang="header.navStructure">Organization</a>
+        <a href="history.html" data-lang="header.navHistory">History</a>
+        <a href="contacts.html" data-lang="header.navContact">Contact</a>
+        
+        <div class="mobile-language-switcher">
+            <button class="mobile-lang-btn active" data-lang="sw">SW</button>
+            <button class="mobile-lang-btn" data-lang="en">EN</button>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="container header-container">
+            <div class="logo">
+                
+                <h1 data-lang="header.title">Christopher Stationary & Library Movies</h1>
+            </div>
+            
+            <nav class="nav-menu">
+                <a href="index.html" class="active" data-lang="header.navHome">Home</a>
+                <a href="services.html" data-lang="header.navServices">Services</a>
+                <a href="about.html" data-lang="header.navAbout">About Us</a>
+                <a href="structure.html" data-lang="header.navStructure">Organization</a>
+                <a href="history.html" data-lang="header.navHistory">History</a>
+                <a href="contacts.html" data-lang="header.navContact">Contact</a>
+            </nav>
+            
+            
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="slider">
+            <div class="slide active" style="background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1560472354-b33ff0c44a43?auto=format&fit=crop&w=1600')">
+                <div class="slide-content fade-in">
+                    <h2 data-lang="home.welcome">Welcome to Christopher Stationary</h2>
+                    <p data-lang="home.subtitle">Your one-stop solution for all ICT and media needs</p>
+                    <a href="services.html" class="btn" data-lang="home.heroBtn">Our Services</a>
+                </div>
+            </div>
+            
+            <div class="slide" style="background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1563013544-824ae1b704d3?auto=format&fit=crop&w=1600')">
+                <div class="slide-content fade-in">
+                    <h2>Quality Printing Services</h2>
+                    <p>Professional printing, photocopy, and design services</p>
+                    <a href="services.html" class="btn">View Services</a>
+                </div>
+            </div>
+            
+            <div class="slide" style="background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1581094794329-c8112a89af12?auto=format&fit=crop&w=1600')">
+                <div class="slide-content fade-in">
+                    <h2>Tech Support & Repair</h2>
+                    <p>Expert smartphone and computer repair services</p>
+                    <a href="services.html" class="btn">Learn More</a>
+                </div>
+                
+            </div>
+            
+            
+            <div class="slider-controls">
+                <button class="slider-dot active"></button>
+                <button class="slider-dot"></button>
+                <button class="slider-dot"></button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="services-section">
+        <div class="container">
+            <div class="section-title fade-in">
+                <h2 data-lang="home.servicesTitle">Our Services</h2>
+                <p>Comprehensive ICT and media solutions for all your needs</p>
+            </div>
+            
+            <div class="services-grid">
+                <div class="service-card fade-in">
+                    <div class="service-icon">
+                        <i class="fas fa-film"></i>
+                    </div>
+                    <div class="service-content">
+                        <h3 data-lang="services.movieBurning">Movie Burning Services</h3>
+                        <p>From Tanzanian series & international movies</p>
+                        <a href="services.html#movies" class="btn btn-primary" data-lang="common.viewAll">View All</a>
+                    </div>
+                </div>
+                <div class="service-card fade-in">
+                    <div class="service-icon">
+                        <i class="fas fa-computers"></i>
+                    </div>
+                    <div class="service-content">
+                        <h3 data-lang="services.movieBurning">Computers maintainance Services</h3>
+                        <p>We recover the dead laptops and desktops </p>
+                        <a href="services.html#movies" class="btn btn-primary" data-lang="common.viewAll">View All</a>
+                    </div>
+                </div>
+
+                <div class="service-card fade-in">
+                    <div class="service-icon">
+                        <i class="fas fa-print"></i>
+                    </div>
+                    <div class="service-content">
+                        <h3 data-lang="services.movieBurning">Printers maintainace </h3>
+                        <p>Printers are maintainaned and became well as genuine</p>
+                        <a href="services.html#movies" class="btn btn-primary" data-lang="common.viewAll">View All</a>
+                    </div>
+                </div>
+                
+                <div class="service-card fade-in">
+                    <div class="service-icon">
+                        <i class="fas fa-music"></i>
+                    </div>
+                    <div class="service-content">
+                        <h3 data-lang="services.musicServices">Music Services</h3>
+                        <p>Audio and video music burning</p>
+                        <a href="services.html#music" class="btn btn-primary" data-lang="common.viewAll">View All</a>
+                    </div>
+                </div>
+                
+                <div class="service-card fade-in">
+                    <div class="service-icon">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <div class="service-content">
+                        <h3 data-lang="services.phoneRepair">Phone Repair</h3>
+                        <p>Smartphone and button phone repair</p>
+                        <a href="services.html#repair" class="btn btn-primary" data-lang="common.viewAll">View All</a>
+                    </div>
+                </div>
+                
+
+                            <div class="service-card fade-in">
+                    <div class="service-icon">
+                        <i class="fas fa-print"></i>
+                    </div>
+                    <div class="service-content">
+                        <h3 data-lang="services.stationary">Stationary & Printing</h3>
+                        <p>Complete printing and design solutions</p>
+                        <a href="services.html#printing" class="btn btn-primary" data-lang="common.viewAll">View All</a>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center">
+                <a href="services.html" class="btn btn-accent" data-lang="common.viewAll">View All Services</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- News Section -->
+    <section class="news-section">
+        <div class="container">
+            <div class="section-title fade-in">
+                <h2 data-lang="home.newsTitle">Latest News & Announcements</h2>
+            </div>
+            
+            <div class="news-grid">
+                <div class="news-card slide-in-left">
+                    <div class="news-image" style="background: linear-gradient(45deg, #2c3e50, #4a6491);">
+                        <div style="height: 100%; display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem;">
+                            <i class="fas fa-tv"></i>
+                        </div>
+                    </div>
+                    <div class="news-content">
+                        <h3 data-lang="home.news1Title">New TV Installation Services</h3>
+                        <div class="news-date">November 15, 2025</div>
+                        <p data-lang="home.news1Desc">Now offering professional installation of Azam TV, DSTV, Startimes, and Zuku</p>
+                        <a href="services.html#tv" class="btn" data-lang="common.readMore">Read More</a>
+                    </div>
+                </div>
+                
+                <div class="news-card fade-in">
+                    <div class="news-image" style="background: linear-gradient(45deg, #e67e22, #f39c12);">
+                        <div style="height: 100%; display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem;">
+                            <i class="fas fa-tools"></i>
+                        </div>
+                    </div>
+                    <div class="news-content">
+                        <h3 data-lang="home.news2Title">Mobile Repair Discount</h3>
+                        <div class="news-date"> 2025</div>
+                        <p data-lang="home.news2Desc">20% off on all smartphone repairs for the month</p>
+                        <a href="services.html#repair" class="btn" data-lang="common.readMore">Read More</a>
+                    </div>
+                </div>
+                
+                <div class="news-card slide-in-right">
+                    <div class="news-image" style="background: linear-gradient(45deg, #27ae60, #2ecc71);">
+                        <div style="height: 100%; display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem;">
+                            <i class="fas fa-film"></i>
+                        </div>
+                    </div>
+                    <div class="news-content">
+                        <h3 data-lang="home.news3Title">New Movie Collection</h3>
+                        <div class="news-date">2025</div>
+                        <p data-lang="home.news3Desc">Latest Turkey like New soz,Kardes ,Worriar  Korean dramas and Bongo movies now available</p>
+                        <a href="services.html#movies" class="btn" data-lang="common.readMore">Read More</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <h2 data-lang="header.title">Christopher Stationary & Library Movies</h2>
+                    <p>Your trusted partner for ICT and media services</p>
+                </div>
+                
+                <div class="footer-links">
+                    <h3 data-lang="home.footerQuickLinks">Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html" data-lang="header.navHome">Home</a></li>
+                        <li><a href="services.html" data-lang="header.navServices">Services</a></li>
+                        <li><a href="about.html" data-lang="header.navAbout">About Us</a></li>
+                        <li><a href="contacts.html" data-lang="header.navContact">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-contact">
+                    <h3 data-lang="home.footerContact">Contact Info</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> <span data-lang="contact.addressText">1288 Lagana Village, Shinyanga, Tanzania</span></p>
+                    <p><i class="fas fa-phone"></i> +255 612 372 627 (Office)</p>
+                    <p><i class="fas fa-phone"></i> +255 754 237 948 (Mobile)</p>
+                    <p><i class="fas fa-envelope"></i> zachariachristophersugilo@gmail.com</p>
+                    <p><i class="fas fa-envelope"></i> amoschristophersugilo@gmail.com</p>
+                    
+                    <div class="social-links">
+                        <a href="https://facebook.com/zachriss" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://twitter.com/zachriss" class="social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="https://instagram.com/zachriss" class="social-link"><i class="fab fa-instagram"></i></a>
+                        <a href="https://wa.me/255754237948" class="social-link"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; <span id="currentYear">2025</span> Christopher Stationary & Library Movies. <span data-lang="home.footerRights">All rights reserved</span>.<br>Designed and Developed by Zachriss </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="js/language-switcher.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/animations.js"></script>
+    
+    <script>
+        // Set current year in footer
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+        
+        // Enhanced Mobile Navigation
+        const navToggle = document.getElementById('navToggle');
+        const mobileNav = document.getElementById('mobileNav');
+        const navOverlay = document.getElementById('navOverlay');
+        const closeNav = document.getElementById('closeNav');
+        
+        function openMobileNav() {
+            mobileNav.classList.add('active');
+            navOverlay.style.display = 'block';
+            setTimeout(() => {
+                navOverlay.style.opacity = '1';
+            }, 10);
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeMobileNav() {
+            mobileNav.classList.remove('active');
+            navOverlay.style.opacity = '0';
+            setTimeout(() => {
+                navOverlay.style.display = 'none';
+            }, 300);
+            document.body.style.overflow = '';
+        }
+        
+        navToggle.addEventListener('click', openMobileNav);
+        closeNav.addEventListener('click', closeMobileNav);
+        navOverlay.addEventListener('click', closeMobileNav);
+        
+        // Close mobile nav when clicking on a link
+        document.querySelectorAll('.mobile-nav a').forEach(link => {
+            link.addEventListener('click', closeMobileNav);
+        });
+        
+        // Mobile language switcher
+        document.querySelectorAll('.mobile-lang-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.mobile-lang-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+                document.querySelector(`.lang-btn[data-lang="${this.dataset.lang}"]`).classList.add('active');
+            });
+        });
+        
+        // Slider functionality
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const dots = document.querySelectorAll('.slider-dot');
+        
+        function showSlide(n) {
+            slides.forEach(slide => slide.classList.remove('active'));
+            dots.forEach(dot => dot.classList.remove('active'));
+            
+            currentSlide = (n + slides.length) % slides.length;
+            slides[currentSlide].classList.add('active');
+            dots[currentSlide].classList.add('active');
+        }
+        
+        dots.forEach((dot, index) => {
+            dot.addEventListener('click', () => showSlide(index));
+        });
+        
+        // Auto slide
+        setInterval(() => {
+            showSlide(currentSlide + 1);
+        }, 5000);
+    </script>
+</body>
+</html>

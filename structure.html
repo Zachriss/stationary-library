@@ -1,0 +1,1066 @@
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-lang="structure.pageTitle">Organization Structure - Christopher Stationary</title>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    
+    <!-- Org Chart Library -->
+    <link rel="stylesheet" href="https://unpkg.com/orgchart@3.1.5/dist/css/jquery.orgchart.min.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+    <style>
+        /* Enhanced Navigation Styles */
+        .nav-toggle {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1002;
+            background: var(--primary);
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .nav-toggle:hover {
+            background: var(--secondary);
+            transform: scale(1.1);
+        }
+        
+        .nav-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 1000;
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .mobile-nav {
+            position: fixed;
+            top: 0;
+            left: -300px;
+            width: 280px;
+            height: 100%;
+            background: var(--primary);
+            z-index: 1001;
+            padding: 80px 20px 20px;
+            overflow-y: auto;
+            transition: left 0.3s ease;
+            box-shadow: 5px 0 15px rgba(0,0,0,0.3);
+        }
+        
+        .mobile-nav.active {
+            left: 0;
+        }
+        
+        .mobile-nav a {
+            display: block;
+            color: white;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .mobile-nav a:hover,
+        .mobile-nav a.active {
+            background: var(--secondary);
+            padding-left: 25px;
+        }
+        
+        .mobile-nav .close-nav {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        .mobile-language-switcher {
+            margin-top: 30px;
+            display: flex;
+            gap: 10px;
+            padding: 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .mobile-lang-btn {
+            flex: 1;
+            padding: 10px;
+            background: rgba(255,255,255,0.1);
+            border: none;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        .mobile-lang-btn.active {
+            background: var(--secondary);
+        }
+        
+        @media (max-width: 768px) {
+            .nav-toggle {
+                display: flex;
+            }
+            
+            .nav-menu {
+                display: none;
+            }
+            
+            .header-container {
+                justify-content: flex-end;
+            }
+            
+            .logo h1 {
+                font-size: 1.2rem;
+            }
+        }
+        
+        /* Enhanced Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.8);
+            z-index: 1003;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .modal-content {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+            animation: modalSlideUp 0.3s ease;
+        }
+        
+        @keyframes modalSlideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            font-size: 1.8rem;
+            cursor: pointer;
+            color: #666;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        
+        .modal-close:hover {
+            background: #f0f0f0;
+            color: var(--primary);
+        }
+    </style>
+</head>
+<body>
+    <!-- Enhanced Mobile Navigation -->
+    <button class="nav-toggle" id="navToggle">
+        <i class="fas fa-bars"></i>
+    </button>
+    
+    <div class="nav-overlay" id="navOverlay"></div>
+    
+    <nav class="mobile-nav" id="mobileNav">
+        <button class="close-nav" id="closeNav">
+            <i class="fas fa-times"></i>
+        </button>
+        
+        <div class="mobile-nav-header">
+            <h3 style="color: white; margin-bottom: 30px; text-align: center;">Christopher Stationary</h3>
+        </div>
+        
+        <a href="index.html" data-lang="header.navHome">Home</a>
+        <a href="services.html" data-lang="header.navServices">Services</a>
+        <a href="about.html" data-lang="header.navAbout">About Us</a>
+        <a href="structure.html" class="active" data-lang="header.navStructure">Organization</a>
+        <a href="history.html" data-lang="header.navHistory">History</a>
+        <a href="contacts.html" data-lang="header.navContact">Contact</a>
+        
+        <div class="mobile-language-switcher">
+            <button class="mobile-lang-btn active" data-lang="sw">SW</button>
+            <button class="mobile-lang-btn" data-lang="en">EN</button>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="container header-container">
+            <div class="logo">
+                <h1 data-lang="header.title">Christopher Stationary & Library Movies</h1>
+            </div>
+            
+            <nav class="nav-menu">
+                <a href="index.html" data-lang="header.navHome">Home</a>
+                <a href="services.html" data-lang="header.navServices">Services</a>
+                <a href="about.html" data-lang="header.navAbout">About Us</a>
+                <a href="structure.html" class="active" data-lang="header.navStructure">Organization</a>
+                <a href="history.html" data-lang="header.navHistory">History</a>
+                <a href="contacts.html" data-lang="header.navContact">Contact</a>
+            </nav>
+            
+
+        </div>
+    </header>
+
+    <!-- Structure Header -->
+    <section class="page-header" style="background: linear-gradient(rgba(44, 62, 80, 0.9), rgba(44, 62, 80, 0.9)), url('https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=1600'); background-size: cover; background-position: center; padding: 100px 0 60px; margin-top: 80px;">
+        <div class="container">
+            <div class="section-title fade-in">
+                <h1 data-lang="structure.pageTitle">Organization Structure</h1>
+                <p>Our team structure and departmental organization</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Organizational Chart -->
+    <section class="org-chart-section" style="padding: 80px 0; background-color: var(--white);">
+        <div class="container">
+            <div class="section-title fade-in">
+                <h2>Organizational Hierarchy</h2>
+                <p>Interactive chart showing our organizational structure</p>
+            </div>
+            
+            <div class="org-chart-container fade-in" style="overflow-x: auto; padding: 20px; background: var(--light-gray); border-radius: 10px;">
+                <div id="orgChart" style="min-width: 1000px; height: 600px;"></div>
+            </div>
+            
+            <!-- Fallback static org chart in case JavaScript fails -->
+            <div id="orgChartStatic" style="display: none; text-align: center; padding: 20px;">
+                <h3>Christopher Stationary - Organization Structure</h3>
+                <div style="display: flex; justify-content: center; margin-top: 30px;">
+                    <div style="text-align: center;">
+                        <div style="background: #2c3e50; color: white; padding: 20px; border-radius: 10px; width: 250px; margin: 0 auto;">
+                            <h4>Zacharia Christopher</h4>
+                            <p>CEO & Founder</p>
+                        </div>
+                        <div style="display: flex; justify-content: center; margin-top: 40px; gap: 40px; flex-wrap: wrap;">
+                            <div style="text-align: center;">
+                                <div style="background: #e67e22; color: white; padding: 15px; border-radius: 10px; width: 200px; margin: 0 auto;">
+                                    <h5>Zacharia Christopher</h5>
+                                    <p>Technical Director</p>
+                                </div>
+                                <div style="display: flex; justify-content: center; margin-top: 20px; gap: 20px;">
+                                    <div style="background: #27ae60; color: white; padding: 10px; border-radius: 8px; width: 180px;">
+                                        <h6>Amoss Sugilo</h6>
+                                        <p>Phone Repair Manager</p>
+                                    </div>
+                                    <div style="background: #27ae60; color: white; padding: 10px; border-radius: 8px; width: 180px;">
+                                        <h6>Zacharia Christopher</h6>
+                                        <p>IT Support Manager</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="text-align: center;">
+                                <div style="background: #e67e22; color: white; padding: 15px; border-radius: 10px; width: 200px; margin: 0 auto;">
+                                    <h5>Yohana Sugilo</h5>
+                                    <p>Operations Director</p>
+                                </div>
+                                <div style="display: flex; justify-content: center; margin-top: 20px; gap: 20px;">
+                                    <div style="background: #27ae60; color: white; padding: 10px; border-radius: 8px; width: 180px;">
+                                        <h6>Yohana Sugilo</h6>
+                                        <p>Printing Manager</p>
+                                    </div>
+                                    <div style="background: #27ae60; color: white; padding: 10px; border-radius: 8px; width: 180px;">
+                                        <h6>Mussa Jibota</h6>
+                                        <p>Customer Service Manager</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="text-align: center;">
+                                <div style="background: #e67e22; color: white; padding: 15px; border-radius: 10px; width: 200px; margin: 0 auto;">
+                                    <h5>Amoss Sugilo</h5>
+                                    <p>Media Director</p>
+                                </div>
+                                <div style="display: flex; justify-content: center; margin-top: 20px;">
+                                    <div style="background: #27ae60; color: white; padding: 10px; border-radius: 8px; width: 180px;">
+                                        <h6>Calvin christopher</h6>
+                                        <p>Media Content Manager</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Department Details -->
+    <section class="departments-section" style="padding: 80px 0; background-color: var(--light-gray);">
+        <div class="container">
+            <div class="section-title fade-in">
+                <h2>Departments</h2>
+                <p>Our organizational departments and their functions</p>
+            </div>
+            
+            <div class="departments-grid">
+                <div class="department-card fade-in" onclick="showDepartmentDetails('management')">
+                    <div class="dept-icon" style="background-color: #2c3e50;">
+                        <i class="fas fa-user-tie"></i>
+                    </div>
+                    <h3 data-lang="structure.management">Management</h3>
+                    <p>Strategic planning and overall business direction</p>
+                    <div class="dept-stats">
+                        <span><i class="fas fa-users"></i> 2 Members</span>
+                    </div>
+                </div>
+                
+                <div class="department-card fade-in" onclick="showDepartmentDetails('technical')">
+                    <div class="dept-icon" style="background-color: #e67e22;">
+                        <i class="fas fa-tools"></i>
+                    </div>
+                    <h3 data-lang="structure.technical">Technical Services</h3>
+                    <p>Phone repair, network troubleshooting, IT support</p>
+                    <div class="dept-stats">
+                        <span><i class="fas fa-users"></i> 2 Members</span>
+                    </div>
+                </div>
+                
+                <div class="department-card fade-in" onclick="showDepartmentDetails('printing')">
+                    <div class="dept-icon" style="background-color: #27ae60;">
+                        <i class="fas fa-print"></i>
+                    </div>
+                    <h3 data-lang="structure.printing">Printing & Stationary</h3>
+                    <p>Printing, photocopy, design, and stationary services</p>
+                    <div class="dept-stats">
+                        <span><i class="fas fa-users"></i> 4 Members</span>
+                    </div>
+                </div>
+                
+                <div class="department-card fade-in" onclick="showDepartmentDetails('media')">
+                    <div class="dept-icon" style="background-color: #8e44ad;">
+                        <i class="fas fa-film"></i>
+                    </div>
+                    <h3 data-lang="structure.media">Media Services</h3>
+                    <p>Movie burning, music services, media content</p>
+                    <div class="dept-stats">
+                        <span><i class="fas fa-users"></i> 4 Members</span>
+                    </div>
+                </div>
+                
+                <div class="department-card fade-in" onclick="showDepartmentDetails('support')">
+                    <div class="dept-icon" style="background-color: #3498db;">
+                        <i class="fas fa-headset"></i>
+                    </div>
+                    <h3 data-lang="structure.support">Customer Support</h3>
+                    <p>Customer service, inquiries, and support</p>
+                    <div class="dept-stats">
+                        <span><i class="fas fa-users"></i> 4 Members</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Employee Directory -->
+    <section class="employees-section" style="padding: 80px 0;">
+        <div class="container">
+            <div class="section-title fade-in">
+                <h2 data-lang="structure.employees">Employee Directory</h2>
+                <p>Contact information for our team members</p>
+            </div>
+            
+            <div class="employees-filter fade-in">
+                <input type="text" id="employeeSearch" placeholder="Search employees..." style="padding: 12px 20px; width: 100%; max-width: 500px; border: 2px solid var(--light-gray); border-radius: 5px; font-size: 16px;">
+            </div>
+            
+            <div class="employees-grid" id="employeesGrid">
+                <!-- Employees will be populated by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Department Details Modal -->
+    <div id="departmentModal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeDepartmentModal()">&times;</button>
+            <div id="modalContent"></div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <h2 data-lang="header.title">Christopher Stationary & Library Movies</h2>
+                    <p>Your trusted partner for ICT and media services</p>
+                </div>
+                
+                <div class="footer-links">
+                    <h3 data-lang="home.footerQuickLinks">Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html" data-lang="header.navHome">Home</a></li>
+                        <li><a href="services.html" data-lang="header.navServices">Services</a></li>
+                        <li><a href="about.html" data-lang="header.navAbout">About Us</a></li>
+                        <li><a href="contacts.html" data-lang="header.navContact">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-contact">
+                    <h3 data-lang="home.footerContact">Contact Info</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> <span data-lang="contact.addressText">1288 Lagana Village, Shinyanga, Tanzania</span></p>
+                    <p><i class="fas fa-phone"></i> +255 612 372 627 (Office)</p>
+                    <p><i class="fas fa-phone"></i> +255 754 237 948 (Mobile)</p>
+                    <p><i class="fas fa-envelope"></i> zachariachristophersugilo@gmail.com</p>
+                    <p><i class="fas fa-envelope"></i> amoschristophersugilo@gmail.com</p>
+                    
+                    <div class="social-links">
+                        <a href="https://facebook.com/zachriss" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://twitter.com/zachriss" class="social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="https://instagram.com/zachriss" class="social-link"><i class="fab fa-instagram"></i></a>
+                        <a href="https://wa.me/255754237948" class="social-link"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; <span id="currentYear">2025</span> Christopher Stationary & Library Movies. <span data-lang="home.footerRights">All rights reserved</span>.<br>Designed and Developed by Zachriss </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="js/language-switcher.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/animations.js"></script>
+    
+    <!-- Org Chart Dependencies -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://unpkg.com/orgchart@3.1.5/dist/js/jquery.orgchart.min.js"></script>
+    
+    <script>
+        // Set current year in footer
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+        
+        // Enhanced Mobile Navigation
+        const navToggle = document.getElementById('navToggle');
+        const mobileNav = document.getElementById('mobileNav');
+        const navOverlay = document.getElementById('navOverlay');
+        const closeNav = document.getElementById('closeNav');
+        
+        function openMobileNav() {
+            mobileNav.classList.add('active');
+            navOverlay.style.display = 'block';
+            setTimeout(() => {
+                navOverlay.style.opacity = '1';
+            }, 10);
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeMobileNav() {
+            mobileNav.classList.remove('active');
+            navOverlay.style.opacity = '0';
+            setTimeout(() => {
+                navOverlay.style.display = 'none';
+            }, 300);
+            document.body.style.overflow = '';
+        }
+        
+        navToggle.addEventListener('click', openMobileNav);
+        closeNav.addEventListener('click', closeMobileNav);
+        navOverlay.addEventListener('click', closeMobileNav);
+        
+        // Close mobile nav when clicking on a link
+        document.querySelectorAll('.mobile-nav a').forEach(link => {
+            link.addEventListener('click', closeMobileNav);
+        });
+        
+        // Mobile language switcher
+        document.querySelectorAll('.mobile-lang-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.mobile-lang-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+                document.querySelector(`.lang-btn[data-lang="${this.dataset.lang}"]`).classList.add('active');
+            });
+        });
+        
+        // Initialize org chart
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if org chart library is available
+            if (typeof $.fn.orgchart !== 'undefined') {
+                initializeOrgChart();
+            } else {
+                console.warn('Org chart library not loaded. Showing static version.');
+                showStaticOrgChart();
+            }
+            loadEmployees();
+            setupEmployeeSearch();
+        });
+        
+        function initializeOrgChart() {
+            try {
+                const chartData = {
+                    'name': 'Zacharia Christopher',
+                    'title': 'CEO & Founder',
+                    'className': 'ceo',
+                    'contact': 'zachariachristophersugilo@gmail.com',
+                    'phone': '+255 754 237 948',
+                    'children': [
+                        {
+                            'name': 'Zacharia christopher',
+                            'title': 'Technical Director',
+                            'className': 'director',
+                            'contact': 'zachariachristophersugilo@gmail',
+                            'phone': '+255 754 237 948',
+                            'children': [
+                                {
+                                    'name': 'Amoss Sugilo',
+                                    'title': 'Phone Repair Manager',
+                                    'className': 'manager',
+                                    'contact': 'amoschristophersugilo@gmail.com',
+                                    'phone': '+255 634 741 958'
+                                },
+                                {
+                                    'name': 'Zacharia Christopher',
+                                    'title': 'IT Support Manager',
+                                    'className': 'manager',
+                                    'contact': 'zachariachristophersugilo@gmail',
+                                    'phone': '+255 754 237 948'
+                                }
+                            ]
+                        },
+                        {
+                            'name': 'Yohana Sugilo',
+                            'title': 'Operations Director',
+                            'className': 'director',
+                            'contact': 'yohanasugilo@gmail.com',
+                            'phone': '+255 612 372 627',
+                            'children': [
+                                {
+                                    'name': 'Yohana sugilo',
+                                    'title': 'Printing Manager',
+                                    'className': 'manager',
+                                    'contact': 'yohanasugilo@gmail.com',
+                                    'phone': '+255 612 372 627'
+                                },
+                                {
+                                    'name': 'Mussa JIbota',
+                                    'title': 'Customer Service Manager',
+                                    'className': 'manager',
+                                    'contact': 'mussajibot23@gmail.com',
+                                    'phone': '+255 627 101 874'
+                                }
+                            ]
+                        },
+                        {
+                            'name': 'Amoss Sugilo',
+                            'title': 'Media Director',
+                            'className': 'director',
+                            'contact': 'amoschristophersugilo@gmail.com',
+                            'phone': '+255 634 741 958',
+                            'children': [
+                                {
+                                    'name': 'Calvin christopher',
+                                    'title': 'Media Content Manager',
+                                    'className': 'manager',
+                                    'contact': 'calvinsugilo@gamail.com',
+                                    'phone': '+255 754 237 948'
+                                }
+                            ]
+                        }
+                    ]
+                };
+                
+                $('#orgChart').orgchart({
+                    'data': chartData,
+                    'nodeContent': 'title',
+                    'pan': true,
+                    'zoom': true,
+                    'verticalLevel': 3,
+                    'createNode': function($node, data) {
+                        $node.append(`<div style="font-size: 12px; margin-top: 5px;">${data.name}</div>`);
+                        $node.on('click', function() {
+                            showEmployeeDetails(data);
+                        });
+                    }
+                });
+                
+                console.log('Org chart initialized successfully');
+            } catch (error) {
+                console.error('Error initializing org chart:', error);
+                showStaticOrgChart();
+            }
+        }
+        
+        function showStaticOrgChart() {
+            // Hide the interactive chart container
+            document.querySelector('.org-chart-container').style.display = 'none';
+            // Show the static org chart
+            document.getElementById('orgChartStatic').style.display = 'block';
+        }
+        
+        function showEmployeeDetails(employee) {
+            const modal = document.getElementById('departmentModal');
+            const modalContent = document.getElementById('modalContent');
+            
+            modalContent.innerHTML = `
+                <h2 style="color: var(--primary); margin-bottom: 20px;">${employee.name}</h2>
+                <h3 style="color: var(--secondary); margin-bottom: 20px;">${employee.title}</h3>
+                <div style="margin-bottom: 20px;">
+                    <p><strong>Department:</strong> ${getDepartmentByTitle(employee.title)}</p>
+                    <p><strong>Email:</strong> ${employee.contact || employee.name.toLowerCase().replace(/ /g, '.') + '@christopherstationary.co.tz'}</p>
+                    <p><strong>Phone:</strong> ${employee.phone || '+255 754 237 948'}</p>
+                    <p><strong>Extension:</strong> ${getEmployeeExtension(employee.name)}</p>
+                </div>
+                <button onclick="closeDepartmentModal()" class="btn" style="background-color: var(--primary);">Close</button>
+            `;
+            
+            modal.style.display = 'flex';
+        }
+        
+        function getDepartmentByTitle(title) {
+            const titleLower = title.toLowerCase();
+            if (titleLower.includes('technical') || titleLower.includes('repair') || titleLower.includes('support')) {
+                return 'Technical Services';
+            } else if (titleLower.includes('printing')) {
+                return 'Printing & Stationary';
+            } else if (titleLower.includes('media')) {
+                return 'Media Services';
+            } else if (titleLower.includes('customer') || titleLower.includes('service')) {
+                return 'Customer Support';
+            } else if (titleLower.includes('ceo') || titleLower.includes('director') || titleLower.includes('founder')) {
+                return 'Management';
+            } else {
+                return 'General Staff';
+            }
+        }
+        
+        function getEmployeeExtension(name) {
+            let hash = 0;
+            for (let i = 0; i < name.length; i++) {
+                hash = ((hash << 5) - hash) + name.charCodeAt(i);
+                hash = hash & hash;
+            }
+            return 'x' + Math.abs(hash % 1000).toString().padStart(3, '0');
+        }
+        
+        function showDepartmentDetails(dept) {
+            const departments = {
+                'management': {
+                    name: 'Management',
+                    description: 'Responsible for strategic planning, business development, and overall direction of the company.',
+                    head: 'Zacharia Christopher',
+                    employees: 5,
+                    responsibilities: [
+                        'Strategic planning and decision making',
+                        'Business development and expansion',
+                        'Financial management and budgeting',
+                        'Policy development and implementation',
+                        'Team leadership and management'
+                    ]
+                },
+                'technical': {
+                    name: 'Technical Services',
+                    description: 'Handles all technical services including phone repair, network troubleshooting, and IT support.',
+                    head: 'zacharia christopher',
+                    employees: 8,
+                    responsibilities: [
+                        'Smartphone and button phone repair',
+                        'Network setup and troubleshooting',
+                        'Software installation and updates',
+                        'Hardware maintenance and repair',
+                        'Computer system maintenance'
+                    ]
+                },
+                'printing': {
+                    name: 'Printing & Stationary',
+                    description: 'Manages all printing, photocopy, design, and stationary services.',
+                    head: 'Yohana sugilo',
+                    employees: 6,
+                    responsibilities: [
+                        'Printing and photocopy services',
+                        'Graphic design and layout',
+                        'Stationary supply and management',
+                        'Document processing and finishing',
+                        'Photo printing and lamination'
+                    ]
+                },
+                'media': {
+                    name: 'Media Services',
+                    description: 'Specializes in movie burning, music services, and media content management.',
+                    head: 'Amoss sugilo',
+                    employees: 4,
+                    responsibilities: [
+                        'Movie burning and copying',
+                        'Music audio and video services',
+                        'Media content management',
+                        'Entertainment services',
+                        'Digital content distribution'
+                    ]
+                },
+                'support': {
+                    name: 'Customer Support',
+                    description: 'Provides customer service, handles inquiries, and ensures customer satisfaction.',
+                    head: 'Mussa jibota',
+                    employees: 7,
+                    responsibilities: [
+                        'Customer service and support',
+                        'Service inquiries and bookings',
+                        'Customer relationship management',
+                        'Feedback collection and analysis',
+                        'Service quality assurance'
+                    ]
+                }
+            };
+            
+            const deptInfo = departments[dept];
+            const modal = document.getElementById('departmentModal');
+            const modalContent = document.getElementById('modalContent');
+            
+            modalContent.innerHTML = `
+                <h2 style="color: var(--primary); margin-bottom: 20px;">${deptInfo.name}</h2>
+                <p style="margin-bottom: 20px; line-height: 1.6;">${deptInfo.description}</p>
+                
+                <div style="margin-bottom: 20px;">
+                    <p><strong>Department Head:</strong> ${deptInfo.head}</p>
+                    <p><strong>Contact:</strong> +255 754 237 948</p>
+                    <p><strong>Email:</strong> ${deptInfo.head.toLowerCase().replace(/ /g, '.')}@christopherstationary.co.tz</p>
+                    <p><strong>Number of Employees:</strong> ${deptInfo.employees}</p>
+                </div>
+                
+                <h3 style="color: var(--secondary); margin-bottom: 15px;">Key Responsibilities</h3>
+                <ul style="margin-bottom: 30px; padding-left: 20px;">
+                    ${deptInfo.responsibilities.map(resp => `<li style="margin-bottom: 8px;">${resp}</li>`).join('')}
+                </ul>
+                
+                <button onclick="closeDepartmentModal()" class="btn" style="background-color: var(--primary);">Close</button>
+            `;
+            
+            modal.style.display = 'flex';
+        }
+        
+        function closeDepartmentModal() {
+            document.getElementById('departmentModal').style.display = 'none';
+        }
+        
+        function loadEmployees() {
+            const employees = [
+                { name: 'Zacharia Christopher', title: 'CEO & Founder', department: 'Management', email: 'zachariachristophersugilo@gmail.com', phone: '+255 754 237 948' },
+                { name: 'Zacharia christopher', title: 'Technical Director', department: 'Technical Services', email: 'zachariachristophersugilo@gmail.com', phone: '+255 754 237 948' },
+                { name: 'Yohana sugilo', title: 'Operations Director', department: 'Management', email: 'yohanasugilo@gamil.com', phone: '+255 754 237 948' },
+                { name: 'Amoss sugilo', title: 'Media Director', department: 'Media Services', email: 'amoschristophersugilo', phone: '+255 754 237 948' },
+                { name: 'amoss sugilo', title: 'Phone Repair Manager', department: 'Technical Services', email: 'zachariachristophersugilo@gmail.com', phone: '+255 754 237 948' },
+                { name: 'zacharia christopher', title: 'IT Support Manager', department: 'Technical Services', email: 'zachariachristophersugilo@gmail.com', phone: '+255 754 237 948' },
+                { name: 'yohana sugilo', title: 'Printing Manager', department: 'Printing & Stationary', email: 'zachariachristophersugilo@gmail.com', phone: '+255 754 237 948' },
+                { name: 'Musa jibota', title: 'Customer Service Manager', department: 'Customer Support', email: 'zachariachristophersugilo@gmail.com', phone: '+255 754 237 948' },
+                { name: 'calvin christopher', title: 'Media Content Manager', department: 'Media Services', email: 'zachariachristophersugilo@gmail.com', phone: '+255 754 237 948' },
+                { name: 'Zacharia chrstopher', title: 'Senior Technician', department: 'Technical Services', email: 'zachariachristophersugilo@gmail.com', phone: '+255 754 237 948' },
+                { name: 'Zacharia christopher', title: 'Printing Specialist', department: 'Printing & Stationary', email: 'zachariachristophersugilo@gmail.com', phone: '+255 754 237 948' },
+                { name: 'Zacharia christopher', title: 'Customer Support Specialist', department: 'Customer Support', email: 'zachariachristophersugilo@gmail.com', phone: '+255 754 237 948' }
+            ];
+            
+            const grid = document.getElementById('employeesGrid');
+            grid.innerHTML = employees.map(emp => `
+                <div class="employee-card" onclick="showEmployeeDetailsModal('${emp.name}', '${emp.title}', '${emp.department}', '${emp.email}', '${emp.phone}')">
+                    <div class="employee-avatar" style="background-color: ${getDepartmentColor(emp.department)};">
+                        ${emp.name.split(' ').map(n => n[0]).join('')}
+                    </div>
+                    <div class="employee-info">
+                        <h3>${emp.name}</h3>
+                        <p>${emp.title}</p>
+                        <span class="dept-badge" style="background-color: ${getDepartmentColor(emp.department)}20; color: ${getDepartmentColor(emp.department)};">
+                            ${emp.department}
+                        </span>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        function getDepartmentColor(department) {
+            const colors = {
+                'Management': '#2c3e50',
+                'Technical Services': '#e67e22',
+                'Printing & Stationary': '#27ae60',
+                'Media Services': '#8e44ad',
+                'Customer Support': '#3498db',
+                'General Staff': '#7f8c8d'
+            };
+            return colors[department] || '#2c3e50';
+        }
+        
+        function showEmployeeDetailsModal(name, title, department, email, phone) {
+            const modal = document.getElementById('departmentModal');
+            const modalContent = document.getElementById('modalContent');
+            
+            modalContent.innerHTML = `
+                <h2 style="color: var(--primary); margin-bottom: 20px;">${name}</h2>
+                <h3 style="color: var(--secondary); margin-bottom: 20px;">${title}</h3>
+                
+                <div style="margin-bottom: 20px;">
+                    <p><strong>Department:</strong> ${department}</p>
+                    <p><strong>Email:</strong> ${email}</p>
+                    <p><strong>Phone:</strong> ${phone}</p>
+                    <p><strong>Extension:</strong> ${getEmployeeExtension(name)}</p>
+                </div>
+                
+                <div style="display: flex; gap: 10px; margin-top: 30px; flex-wrap: wrap;">
+                    <button onclick="window.location.href='mailto:${email}'" class="btn" style="background-color: var(--primary); flex: 1; min-width: 120px;">
+                        <i class="fas fa-envelope"></i> Email
+                    </button>
+                    <button onclick="window.location.href='tel:${phone}'" class="btn" style="background-color: var(--accent); flex: 1; min-width: 120px;">
+                        <i class="fas fa-phone"></i> Call
+                    </button>
+                    <button onclick="closeDepartmentModal()" class="btn" style="background-color: #666; flex: 1; min-width: 120px;">
+                        Close
+                    </button>
+                </div>
+            `;
+            
+            modal.style.display = 'flex';
+        }
+        
+        function setupEmployeeSearch() {
+            const searchInput = document.getElementById('employeeSearch');
+            if (searchInput) {
+                searchInput.addEventListener('input', function() {
+                    const searchTerm = this.value.toLowerCase();
+                    const cards = document.querySelectorAll('.employee-card');
+                    
+                    cards.forEach(card => {
+                        const name = card.querySelector('h3').textContent.toLowerCase();
+                        const title = card.querySelector('p').textContent.toLowerCase();
+                        const dept = card.querySelector('.dept-badge').textContent.toLowerCase();
+                        
+                        if (name.includes(searchTerm) || title.includes(searchTerm) || dept.includes(searchTerm)) {
+                            card.style.display = 'flex';
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    });
+                });
+            }
+        }
+        
+        // Add CSS for structure page
+        const style = document.createElement('style');
+        style.textContent = `
+            .org-chart-container {
+                min-height: 600px;
+                position: relative;
+            }
+            .departments-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                gap: 25px;
+            }
+            .department-card {
+                background: white;
+                padding: 30px;
+                border-radius: 10px;
+                box-shadow: var(--shadow);
+                text-align: center;
+                cursor: pointer;
+                transition: all 0.3s ease;
+            }
+            .department-card:hover {
+                transform: translateY(-10px);
+                box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+            }
+            .dept-icon {
+                width: 70px;
+                height: 70px;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin: 0 auto 20px;
+                color: white;
+                font-size: 1.8rem;
+            }
+            .department-card h3 {
+                margin-bottom: 15px;
+                color: var(--primary);
+            }
+            .dept-stats {
+                margin-top: 20px;
+                padding-top: 15px;
+                border-top: 1px solid var(--light-gray);
+                color: #666;
+                font-size: 0.9rem;
+            }
+            .employees-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+                gap: 25px;
+                margin-top: 40px;
+            }
+            .employee-card {
+                background: white;
+                padding: 25px;
+                border-radius: 10px;
+                box-shadow: var(--shadow);
+                display: flex;
+                align-items: center;
+                gap: 20px;
+                cursor: pointer;
+                transition: transform 0.3s ease;
+            }
+            .employee-card:hover {
+                transform: translateY(-5px);
+            }
+            .employee-avatar {
+                width: 60px;
+                height: 60px;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: white;
+                font-weight: bold;
+                font-size: 1.2rem;
+                flex-shrink: 0;
+            }
+            .employee-info h3 {
+                margin-bottom: 5px;
+                color: var(--primary);
+            }
+            .employee-info p {
+                color: #666;
+                margin-bottom: 10px;
+                font-size: 0.9rem;
+            }
+            .dept-badge {
+                padding: 4px 12px;
+                border-radius: 20px;
+                font-size: 0.8rem;
+                font-weight: 500;
+            }
+            .employees-filter {
+                text-align: center;
+                margin-bottom: 30px;
+            }
+            
+            /* Org Chart Custom Styles */
+            .orgchart {
+                background: transparent !important;
+            }
+            .orgchart .node {
+                padding: 15px !important;
+                border: 2px solid var(--primary) !important;
+                border-radius: 8px !important;
+                background: white !important;
+                color: var(--primary) !important;
+                box-shadow: var(--shadow) !important;
+                cursor: pointer !important;
+                transition: all 0.3s ease !important;
+                min-width: 180px !important;
+                text-align: center !important;
+            }
+            .orgchart .node:hover {
+                transform: scale(1.05) !important;
+                box-shadow: 0 10px 20px rgba(0,0,0,0.15) !important;
+            }
+            .orgchart .node.ceo {
+                background: linear-gradient(135deg, #2c3e50, #34495e) !important;
+                color: white !important;
+                border-color: #2c3e50 !important;
+            }
+            .orgchart .node.director {
+                background: linear-gradient(135deg, #e67e22, #d35400) !important;
+                color: white !important;
+                border-color: #e67e22 !important;
+            }
+            .orgchart .node.manager {
+                background: linear-gradient(135deg, #27ae60, #229954) !important;
+                color: white !important;
+                border-color: #27ae60 !important;
+            }
+            
+            /* Static org chart styles */
+            #orgChartStatic h3 {
+                color: var(--primary);
+                margin-bottom: 30px;
+            }
+            #orgChartStatic h4, #orgChartStatic h5, #orgChartStatic h6 {
+                margin: 5px 0;
+            }
+            #orgChartStatic p {
+                margin: 5px 0;
+                font-size: 0.9rem;
+                opacity: 0.9;
+            }
+            
+            @media (max-width: 768px) {
+                .org-chart-container {
+                    min-height: 400px;
+                }
+                .departments-grid {
+                    grid-template-columns: 1fr;
+                }
+                .employees-grid {
+                    grid-template-columns: 1fr;
+                }
+                .header-container {
+                    padding-top: 80px;
+                }
+                #orgChartStatic {
+                    overflow-x: auto;
+                }
+                #orgChartStatic > div {
+                    min-width: 600px;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>

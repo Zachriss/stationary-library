@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-lang="about.pageTitle">About Us - Christopher Stationary</title>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+    <style>
+        /* Enhanced Navigation Styles */
+        .nav-toggle {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1002;
+            background: var(--primary);
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .nav-toggle:hover {
+            background: var(--secondary);
+            transform: scale(1.1);
+        }
+        
+        .nav-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 1000;
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .mobile-nav {
+            position: fixed;
+            top: 0;
+            left: -300px;
+            width: 280px;
+            height: 100%;
+            background: var(--primary);
+            z-index: 1001;
+            padding: 80px 20px 20px;
+            overflow-y: auto;
+            transition: left 0.3s ease;
+            box-shadow: 5px 0 15px rgba(0,0,0,0.3);
+        }
+        
+        .mobile-nav.active {
+            left: 0;
+        }
+        
+        .mobile-nav a {
+            display: block;
+            color: white;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .mobile-nav a:hover,
+        .mobile-nav a.active {
+            background: var(--secondary);
+            padding-left: 25px;
+        }
+        
+        .mobile-nav .close-nav {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        .mobile-language-switcher {
+            margin-top: 30px;
+            display: flex;
+            gap: 10px;
+            padding: 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .mobile-lang-btn {
+            flex: 1;
+            padding: 10px;
+            background: rgba(255,255,255,0.1);
+            border: none;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        .mobile-lang-btn.active {
+            background: var(--secondary);
+        }
+        
+        @media (max-width: 768px) {
+            .nav-toggle {
+                display: flex;
+            }
+            
+            .nav-menu {
+                display: none;
+            }
+            
+            .header-container {
+                justify-content: flex-end;
+            }
+            
+            .logo h1 {
+                font-size: 1.2rem;
+            }
+        }
+        
+        /* About page specific styles */
+        .intro-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+        }
+        .intro-text h2 {
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+        .intro-text p {
+            margin-bottom: 20px;
+            line-height: 1.8;
+        }
+        .mv-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        .mv-card {
+            text-align: center;
+            padding: 40px 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+        }
+        .mv-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            color: white;
+            font-size: 2rem;
+        }
+        .mv-card h3 {
+            margin-bottom: 15px;
+            color: var(--primary);
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            text-align: center;
+        }
+        .stat-item {
+            padding: 30px;
+        }
+        .stat-number {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: var(--secondary);
+        }
+        .stat-label {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        .team-card {
+            text-align: center;
+            padding: 30px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s ease;
+        }
+        .team-card:hover {
+            transform: translateY(-10px);
+        }
+        .team-info h3 {
+            margin-bottom: 10px;
+            color: var(--primary);
+        }
+        .team-info p {
+            margin-bottom: 10px;
+            color: #666;
+        }
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        .testimonial-card {
+            background: white;
+            padding: 40px 30px;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            position: relative;
+        }
+        .testimonial-content p {
+            font-style: italic;
+            line-height: 1.8;
+            margin-bottom: 30px;
+        }
+        .testimonial-author {
+            border-top: 1px solid var(--light-gray);
+            padding-top: 20px;
+        }
+        .testimonial-author h4 {
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+        .testimonial-author p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            .intro-content {
+                grid-template-columns: 1fr;
+            }
+            .stat-number {
+                font-size: 2.5rem;
+            }
+            .header-container {
+                padding-top: 80px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Enhanced Mobile Navigation -->
+    <button class="nav-toggle" id="navToggle">
+        <i class="fas fa-bars"></i>
+    </button>
+    
+    <div class="nav-overlay" id="navOverlay"></div>
+    
+    <nav class="mobile-nav" id="mobileNav">
+        <button class="close-nav" id="closeNav">
+            <i class="fas fa-times"></i>
+        </button>
+        
+        <div class="mobile-nav-header">
+            <h3 style="color: white; margin-bottom: 30px; text-align: center;">Christopher Stationary</h3>
+        </div>
+        
+        <a href="index.html" data-lang="header.navHome">Home</a>
+        <a href="services.html" data-lang="header.navServices">Services</a>
+        <a href="about.html" class="active" data-lang="header.navAbout">About Us</a>
+        <a href="structure.html" data-lang="header.navStructure">Organization</a>
+        <a href="history.html" data-lang="header.navHistory">History</a>
+        <a href="contacts.html" data-lang="header.navContact">Contact</a>
+        
+        <div class="mobile-language-switcher">
+            <button class="mobile-lang-btn active" data-lang="sw">SW</button>
+            <button class="mobile-lang-btn" data-lang="en">EN</button>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="container header-container">
+            <div class="logo">
+                <h1 data-lang="header.title">Christopher Stationary & Library Movies</h1>
+            </div>
+            
+            <nav class="nav-menu">
+                <a href="index.html" data-lang="header.navHome">Home</a>
+                <a href="services.html" data-lang="header.navServices">Services</a>
+                <a href="about.html" class="active" data-lang="header.navAbout">About Us</a>
+                <a href="structure.html" data-lang="header.navStructure">Organization</a>
+                <a href="history.html" data-lang="header.navHistory">History</a>
+                <a href="contacts.html" data-lang="header.navContact">Contact</a>
+            </nav>
+            
+            
+        </div>
+    </header>
+
+    <!-- About Header -->
+    <section class="page-header" style="background: linear-gradient(rgba(44, 62, 80, 0.9), rgba(44, 62, 80, 0.9)), url('https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=1600'); background-size: cover; background-position: center; padding: 100px 0 60px; margin-top: 80px;">
+        <div class="container">
+            <div class="section-title fade-in">
+                <h1 data-lang="about.pageTitle">About Us</h1>
+                <p>Leading ICT and media services provider since 2025</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Company Introduction -->
+    <section class="about-intro" style="padding: 80px 0;">
+        <div class="container">
+            <div class="intro-content fade-in">
+                <div class="intro-text">
+                    <h2>Welcome to Christopher Stationary & Library Movies</h2>
+                    <p>Founded in 2025 september by Zacharia Christopher Sugilo, we have grown from a small stationary shop to a comprehensive ICT and media services provider. Our commitment to quality, affordability, and customer satisfaction has made us a trusted name in the community at lagana kishapu.</p>
+                    <p>We specialize in providing a wide range of services including movie burning, printing, phone repairs, TV installation, and online application assistance. Our team of skilled professionals is dedicated to delivering exceptional service to every customer.</p>
+                    <p><strong>Location:</strong> 1288 Lagana Village, kishapu - Shinyanga, Tanzania</p>
+                    <p><strong>Contact:</strong> +255 754 237 948 | zachariachristophersugilo@gmail.com</p>
+                </div>
+                <div class="intro-image">
+                    <div style="width: 100%; height: 300px; background: linear-gradient(45deg, #2c3e50, #4a6491); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white; font-size: 4rem;">
+                        <i class="fas fa-building"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Mission, Vision, Values -->
+    <section class="mv-section" style="background-color: var(--light-gray); padding: 80px 0;">
+        <div class="container">
+            <div class="mv-grid">
+                <div class="mv-card fade-in">
+                    <div class="mv-icon" style="background-color: #e67e22;">
+                        <i class="fas fa-bullseye"></i>
+                    </div>
+                    <h3 data-lang="about.mission">Our Mission</h3>
+                    <p data-lang="about.missionText">To provide affordable, reliable ICT and media services to our community while embracing technological advancements.</p>
+                </div>
+                
+                <div class="mv-card fade-in">
+                    <div class="mv-icon" style="background-color: #27ae60;">
+                        <i class="fas fa-eye"></i>
+                    </div>
+                    <h3 data-lang="about.vision">Our Vision</h3>
+                    <p data-lang="about.visionText">To become the leading ICT solutions provider in Tanzania, known for quality service and customer satisfaction.</p>
+                </div>
+                
+                <div class="mv-card fade-in">
+                    <div class="mv-icon" style="background-color: #2c3e50;">
+                        <i class="fas fa-handshake"></i>
+                    </div>
+                    <h3 data-lang="about.values">Our Values</h3>
+                    <p data-lang="about.valuesText">Integrity, Innovation, Customer Focus, Quality Service, Community Engagement</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Statistics -->
+    <section class="stats-section" style="padding: 80px 0; background: linear-gradient(rgba(44, 62, 80, 0.9), rgba(44, 62, 80, 0.9)), url('https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1600'); background-size: cover; color: white;">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-item fade-in">
+                    <div class="stat-number counter" data-target="1" data-duration="2000">0</div>
+                    <div class="stat-label" data-lang="about.statsYears">Years in Business</div>
+                </div>
+                
+                <div class="stat-item fade-in">
+                    <div class="stat-number counter" data-target="25" data-duration="2000">0</div>
+                    <div class="stat-label" data-lang="about.statsServices">Services Offered</div>
+                </div>
+                
+                <div class="stat-item fade-in">
+                    <div class="stat-number counter" data-target="500" data-duration="2000">0</div>
+                    <div class="stat-label" data-lang="about.statsCustomers">Happy Customers</div>
+                </div>
+                
+                <div class="stat-item fade-in">
+                    <div class="stat-number counter" data-target="5" data-duration="2000">0</div>
+                    <div class="stat-label">Team Members</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <section class="team-section" style="padding: 80px 0;">
+        <div class="container">
+            <div class="section-title fade-in">
+                <h2 data-lang="about.teamTitle">Our Team</h2>
+                <p>Meet our dedicated team of professionals</p>
+            </div>
+            
+            <div class="team-grid">
+                <div class="team-card fade-in">
+                    <div class="team-image">
+                        <div style="width: 150px; height: 150px; border-radius: 50%; background: linear-gradient(45deg, #2c3e50, #4a6491); margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem;">
+                            <i class="fas fa-user-tie"></i>
+                        </div>
+                    </div>
+                    <div class="team-info">
+                        <h3>Zacharia Christopher</h3>
+                        <p>Founder & CEO</p>
+                        <p>With over 3 years of experience in ICT services</p>
+                        <p><strong>Contact:</strong> zachariachristophersugilo@gmail.com</p>
+                    </div>
+                </div>
+                
+                <div class="team-card fade-in">
+                    <div class="team-image">
+                        <div style="width: 150px; height: 150px; border-radius: 50%; background: linear-gradient(45deg, #e67e22, #f39c12); margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem;">
+                            <i class="fas fa-tools"></i>
+                        </div>
+                    </div>
+                    <div class="team-info">
+                        <h3>Yohana Sugilo</h3>
+                        <p>Manager </p>
+                        <p>Expert in burning movies,printing</p>
+                        <p><strong>Contact:</strong> 0612372627</p>
+                    </div>
+                </div>
+                
+                <div class="team-card fade-in">
+                    <div class="team-image">
+                        <div style="width: 150px; height: 150px; border-radius: 50%; background: linear-gradient(45deg, #27ae60, #2ecc71); margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem;">
+                            <i class="fas fa-film"></i>
+                        </div>
+                    </div>
+                    <div class="team-info">
+                        <h3>Amoss C. sugilo</h3>
+                        <p>Media Services Manager</p>
+                        <p>Specialist in Electricity, movie burning and media content</p>
+                        <p><strong>Contact:</strong> amoschristophersugilo@gmail.com</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="testimonials-section" style="background-color: var(--light-gray); padding: 80px 0;">
+        <div class="container">
+            <div class="section-title fade-in">
+                <h2 data-lang="about.testimonials">Customer Testimonials</h2>
+                <p>What our customers say about us</p>
+            </div>
+            
+            <div class="testimonials-grid">
+                <div class="testimonial-card fade-in">
+                    <div class="testimonial-content">
+                        <i class="fas fa-quote-left" style="color: #e67e22; font-size: 2rem; margin-bottom: 20px;"></i>
+                        <p data-lang="about.testimonial1">Ulinisaidia kutoa password ya simu yangu niliyokua nimesahau asante sana kaka</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <h4>John Mwamba</h4>
+                        <p>Regular Customer</p>
+                    </div>
+                </div>
+                
+                <div class="testimonial-card fade-in">
+                    <div class="testimonial-content">
+                        <i class="fas fa-quote-left" style="color: #27ae60; font-size: 2rem; margin-bottom: 20px;"></i>
+                        <p data-lang="about.testimonial2">Aisee ni sehemu nzuri sana kwajili ya kurushiwa movie na miziki huduma zenu nimezipenda sana </p>
+                    </div>
+                    <div class="testimonial-author">
+                        <h4>Shadrack Paul</h4>
+                        <p>Movie Enthusiast</p>
+                    </div>
+                </div>
+                
+                <div class="testimonial-card fade-in">
+                    <div class="testimonial-content">
+                        <i class="fas fa-quote-left" style="color: #2c3e50; font-size: 2rem; margin-bottom: 20px;"></i>
+                        <p data-lang="about.testimonial3">Ulinifungia Dish langu la azam Tv tangu ufunge halijawai kuharibika kabsa kazi yako ni nzuri sana </p>
+                    </div>
+                    <div class="testimonial-author">
+                        <h4>Oscar Richard</h4>
+                        <p>Home Owner</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <h2 data-lang="header.title">Christopher Stationary & Library Movies</h2>
+                    <p>Your trusted partner for ICT and media services</p>
+                </div>
+                
+                <div class="footer-links">
+                    <h3 data-lang="home.footerQuickLinks">Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html" data-lang="header.navHome">Home</a></li>
+                        <li><a href="services.html" data-lang="header.navServices">Services</a></li>
+                        <li><a href="about.html" data-lang="header.navAbout">About Us</a></li>
+                        <li><a href="contacts.html" data-lang="header.navContact">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-contact">
+                    <h3 data-lang="home.footerContact">Contact Info</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> <span data-lang="contact.addressText">1288 Lagana Village, Shinyanga, Tanzania</span></p>
+                    <p><i class="fas fa-phone"></i> +255 612 372 627 (Office)</p>
+                    <p><i class="fas fa-phone"></i> +255 754 237 948 (Mobile)</p>
+                    <p><i class="fas fa-envelope"></i> zachariachristophersugilo@gmail.com</p>
+                    <p><i class="fas fa-envelope"></i> amoschristophersugilo@gmail.com</p>
+                    
+                    <div class="social-links">
+                        <a href="https://facebook.com/zachriss" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://twitter.com/zachriss" class="social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="https://instagram.com/zachriss" class="social-link"><i class="fab fa-instagram"></i></a>
+                        <a href="https://wa.me/255754237948" class="social-link"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; <span id="currentYear">2025</span> Christopher Stationary & Library Movies.<span data-lang="home.footerRights">All rights reserved</span>.<br>Designed and Developed by Zachriss </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="js/language-switcher.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/animations.js"></script>
+    
+    <script>
+        // Set current year in footer
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+        
+        // Enhanced Mobile Navigation
+        const navToggle = document.getElementById('navToggle');
+        const mobileNav = document.getElementById('mobileNav');
+        const navOverlay = document.getElementById('navOverlay');
+        const closeNav = document.getElementById('closeNav');
+        
+        function openMobileNav() {
+            mobileNav.classList.add('active');
+            navOverlay.style.display = 'block';
+            setTimeout(() => {
+                navOverlay.style.opacity = '1';
+            }, 10);
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeMobileNav() {
+            mobileNav.classList.remove('active');
+            navOverlay.style.opacity = '0';
+            setTimeout(() => {
+                navOverlay.style.display = 'none';
+            }, 300);
+            document.body.style.overflow = '';
+        }
+        
+        navToggle.addEventListener('click', openMobileNav);
+        closeNav.addEventListener('click', closeMobileNav);
+        navOverlay.addEventListener('click', closeMobileNav);
+        
+        // Close mobile nav when clicking on a link
+        document.querySelectorAll('.mobile-nav a').forEach(link => {
+            link.addEventListener('click', closeMobileNav);
+        });
+        
+        // Mobile language switcher
+        document.querySelectorAll('.mobile-lang-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.mobile-lang-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+                document.querySelector(`.lang-btn[data-lang="${this.dataset.lang}"]`).classList.add('active');
+            });
+        });
+        
+        // Counter animation for statistics
+        function animateCounters() {
+            const counters = document.querySelectorAll('.counter');
+            counters.forEach(counter => {
+                const target = parseInt(counter.getAttribute('data-target'));
+                const duration = parseInt(counter.getAttribute('data-duration'));
+                const increment = target / (duration / 16);
+                let current = 0;
+                
+                const updateCounter = () => {
+                    current += increment;
+                    if (current < target) {
+                        counter.textContent = Math.floor(current);
+                        setTimeout(updateCounter, 16);
+                    } else {
+                        counter.textContent = target;
+                    }
+                };
+                
+                updateCounter();
+            });
+        }
+        
+        // Trigger counter animation when section is in view
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    animateCounters();
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.5 });
+        
+        observer.observe(document.querySelector('.stats-section'));
+    </script>
+</body>
+</html>
